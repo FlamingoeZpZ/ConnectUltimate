@@ -1,0 +1,18 @@
+﻿{
+  "name": "Game.Boards",
+  "rootNamespace": "Game.Boards",
+  "references": [
+    "UniTask",
+    "ScriptableObjects",
+    "Game.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

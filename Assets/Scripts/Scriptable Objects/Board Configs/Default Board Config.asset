@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f84a0d47856f9bc49bd1e75235a55c8f, type: 3}
+  m_Name: Default Board Config
+  m_EditorClassIdentifier: Assembly-CSharp::BoardConfiguration
+  <numCols>k__BackingField: 7
+  <numRows>k__BackingField: 6
+  <numConnect>k__BackingField: 4
+  <useGravity>k__BackingField: 0
+  <useSpinning>k__BackingField: 0
+  <usePlinko>k__BackingField: 0
+  <skipTurnIfFailedToSettle>k__BackingField: 1
+  <coinSettleTime>k__BackingField: 30

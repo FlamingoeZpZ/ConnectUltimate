@@ -1,0 +1,17 @@
+﻿{
+  "name": "Game.Pieces",
+  "rootNamespace": "Game.Pieces",
+  "references": [
+    "Game.Core",
+    "Utility"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
