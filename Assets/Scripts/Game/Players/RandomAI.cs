@@ -1,5 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using Game.Pieces;
+using Game.Core;
 
 namespace Game.Players
 {

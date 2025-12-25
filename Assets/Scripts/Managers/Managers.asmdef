@@ -1,10 +1,11 @@
 ﻿{
-  "name": "Game.Boards",
-  "rootNamespace": "Game.Boards",
-  "references": [
+  "name": "Managers",
+  "rootNamespace": "Managers",
+  "references": [ 
     "UniTask",
     "ScriptableObjects",
-    "Game.Core"
+    "Game.Core",
+    "Game.Players"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

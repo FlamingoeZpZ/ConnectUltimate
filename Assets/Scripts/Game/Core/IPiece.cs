@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Game.Core
 {
@@ -6,6 +8,7 @@ namespace Game.Core
     {
         public Vector3 GetCurrentPosition();
         public IPlayer GetCurrentPlayer();
+        public UniTask<PieceData> DropPieceLoop();
     }
     
     public struct PieceData
@@ -20,11 +23,14 @@ namespace Game.Core
         }
     }
     
+    [Flags]
     public enum EPlacementType
     {
-        None = -1,
-        Fail, //This is when the player is bad
-        Missed, // This is when it lands on something and got stuck, but not in any tile... 
-        Success
+        None = 0, 
+        GotStuck = 1, // This is when it lands on something and got stuck, but not in any tile... 
+        TimerDespawned = 2,  //This is when the player is bad 
+        Success = 4, // This is when the piece lands properly.
+        MissOrSuccess = TimerDespawned | Success,
+        Any = GotStuck | TimerDespawned | Success,
     }
 }

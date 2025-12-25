@@ -3,7 +3,9 @@
   "rootNamespace": "Game.Players",
   "references": [
     "UniTask",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "Game.Core",
+    "Game.Pieces"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

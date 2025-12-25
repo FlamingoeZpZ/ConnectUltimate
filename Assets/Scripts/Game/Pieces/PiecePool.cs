@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using Game.Core;
+using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Game.Pieces
 {
 
-//Do I actually even want this?
     public class PiecePool : MonoBehaviour
     {
-        [SerializeField] private Piece prefab;
+        [SerializeField] private PhysicalPiece prefab;
+        private BoardConfiguration _boardConfiguration;
 
         private const int BaseNumTiles = 16;
 
-        private readonly List<Piece> _activePieces = new();
-        private readonly Queue<Piece> _inactivePieces = new();
+        private readonly List<PhysicalPiece> _activePieces = new();
+        private readonly Queue<PhysicalPiece> _inactivePieces = new();
         public static PiecePool instance { get; private set; }
 
 
@@ -26,6 +27,7 @@ namespace Game.Pieces
             }
 
             instance = this;
+            _boardConfiguration = Settings.boardConfiguration;
 
             DontDestroyOnLoad(gameObject);
 
@@ -40,12 +42,13 @@ namespace Game.Pieces
 
 
 
-        public Piece SpawnPiece(IPlayer owner)
+        public PhysicalPiece SpawnPiece(IPlayer owner)
         {
-            Piece piece = GetOrCreatePiece();
-            piece.AssignPiece(owner);
-            ActivatePiece(piece);
-            return piece;
+            PhysicalPiece physicalPiece = GetOrCreatePiece();
+            physicalPiece.transform.localScale = Vector3.one * (_boardConfiguration.RunTimeTileSize - 0.02f);
+            physicalPiece.AssignPiece(owner);
+            ActivatePiece(physicalPiece);
+            return physicalPiece;
         }
 
         public void ReturnAllPieces()
@@ -57,37 +60,37 @@ namespace Game.Pieces
             }
         }
 
-        public void ReturnActivePiece(Piece piece)
+        public void ReturnActivePiece(PhysicalPiece physicalPiece)
         {
-            if (_activePieces.Contains(piece))
+            if (_activePieces.Contains(physicalPiece))
             {
-                EnqueuePiece(piece);
-                _activePieces.Remove(piece);
+                EnqueuePiece(physicalPiece);
+                _activePieces.Remove(physicalPiece);
             }
         }
 
-        private Piece GetOrCreatePiece()
+        private PhysicalPiece GetOrCreatePiece()
         {
             if (_inactivePieces.TryDequeue(out var piece)) return piece;
             return CreatePiece();
         }
 
-        private Piece CreatePiece()
+        private PhysicalPiece CreatePiece()
         {
-            Piece piece = Instantiate(prefab, transform);
-            return piece;
+            PhysicalPiece physicalPiece = Instantiate(prefab, transform);
+            return physicalPiece;
         }
 
-        private void EnqueuePiece(Piece piece)
+        private void EnqueuePiece(PhysicalPiece physicalPiece)
         {
-            _inactivePieces.Enqueue(piece);
-            piece.gameObject.SetActive(false);
+            _inactivePieces.Enqueue(physicalPiece);
+            physicalPiece.gameObject.SetActive(false);
         }
 
-        private void ActivatePiece(Piece piece)
+        private void ActivatePiece(PhysicalPiece physicalPiece)
         {
-            _activePieces.Add(piece);
-            piece.gameObject.SetActive(true);
+            _activePieces.Add(physicalPiece);
+            physicalPiece.gameObject.SetActive(true);
         }
     }
 }

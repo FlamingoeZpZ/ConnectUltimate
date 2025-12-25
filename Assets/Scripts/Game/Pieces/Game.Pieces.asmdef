@@ -3,7 +3,9 @@
   "rootNamespace": "Game.Pieces",
   "references": [
     "Game.Core",
-    "Utility"
+    "Utility",
+    "UniTask",
+    "ScriptableObjects"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

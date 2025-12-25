@@ -3,7 +3,9 @@
   "rootNamespace": "Game.Tiles",
   "references": [
     "Game.Core",
-    "UniTask"
+    "UniTask",
+    "Utility",
+    "ScriptableObjects"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

@@ -1,34 +1,28 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using Game.Core;
 using Game.Players;
-using Scriptable_Objects;
+using ScriptableObjects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    [DefaultExecutionOrder(-1000)]
-    public class PlayerManager : MonoBehaviour, IConfiguration
+    public class PlayerManager : MonoBehaviour
     {
         private PlayerConfiguration _playerConfig;
         
         [SerializeField] private Material[] sharedPlayerMaterials;
-        [SerializeField] private Human humanPlayerPrefab;
+        [SerializeField] private GameObject humanPlayerPrefab;
 
         private IPlayer[] _players;
         private int _currentPlayer;
 
         public IPlayer currentPlayer => _players[_currentPlayer];
 
-        public static PlayerManager instance { get; private set; }
-
         private void Awake()
         {
-            if (instance && instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
+            _playerConfig = Settings.playerConfiguration;
         }
 
         public void CreatePlayers()
@@ -50,22 +44,10 @@ namespace Managers
                 {
                    var human = Instantiate(humanPlayerPrefab, transform);
                    human.name = "Player: " + i;
-                   _players[i] = human;
+                   _players[i] = human.GetComponent<IPlayer>();
                 }
 
                 _players[i].SetPlayerInformation(playerInfo);
-            }
-        }
-
-        public void InitializeConfig(ScriptableObject configData)
-        {
-            if (configData is PlayerConfiguration data)
-            {
-                _playerConfig = data;
-            }
-            else
-            {
-                Debug.LogError("In valid data", gameObject);
             }
         }
 
@@ -75,9 +57,18 @@ namespace Managers
             _currentPlayer = _playerConfig.randomStartingPlayer? Random.Range(0, _playerConfig.numPlayers) : (_playerConfig.startingPlayer + offset) % _playerConfig.numPlayers;
         }
         
-        public async UniTask ChooseNextPlayer()
+        public void ChooseNextPlayer()
         {
             _currentPlayer = (_currentPlayer + 1) %  _playerConfig.numPlayers;
         }
+        
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            if(humanPlayerPrefab == null || !humanPlayerPrefab.TryGetComponent(out IPlayer _))
+                Debug.LogError("There is an issue with the current selected player prefab: ", gameObject);
+            
+        }
+#endif
     }
 }

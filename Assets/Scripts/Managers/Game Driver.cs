@@ -1,81 +1,125 @@
 using Cysharp.Threading.Tasks;
-using Game;
-using Managers;
+using Game.Core;
+using ScriptableObjects;
 using UnityEngine;
 
-/// <summary>
-/// Dependency Inversion...
-/// </summary>
-public class GameDriver : MonoBehaviour
-{
-    [SerializeField] private PlayerConfiguration playerConfig;
-    [SerializeField] private BoardConfiguration boardConfig;
-
-    private PlayerManager _playerManager;
-    private BoardManager _boardManager;
+namespace Managers{
     
-    private int _numGamesPlayed;
-    
-    public int NumGamesPlayed => _numGamesPlayed;
-
-
-    private void Start()
+    [RequireComponent(typeof(BoardGenerator), typeof(PlayerManager)), DefaultExecutionOrder(1000)]
+    public class GameDriver : MonoBehaviour
     {
-        ResetGameplayLoop();
-    }
+        private GameConfiguration _gameConfig;
 
-    [ContextMenu("ResetGameplayLoop")]
-    public void ResetGameplayLoop()
-    {
-        _playerManager = PlayerManager.instance;
-        _boardManager = BoardManager.instance;
-        
-        _playerManager.InitializeConfig(playerConfig);
-        _boardManager.InitializeConfig(boardConfig);
-        
-        
-        _ = HandleGameLoop();
-    }
+        private PlayerManager _playerManager;
+        private BoardManager _boardManager;
+        private BoardGenerator _boardGenerator;
 
-    public async UniTask HandleGameLoop()
-    {
-        //Choose the player...
-        _playerManager.CreatePlayers();
-        await _playerManager.ChooseFirstPlayer(_numGamesPlayed);
-        
-        IPlayer[] winners = null;
-        
-        while (!_boardManager.IsFull()) // Force us to enter...?
+        private int _numGamesPlayed;
+
+        public int numGamesPlayed => _numGamesPlayed;
+
+
+        private void Start()
         {
-            //Wait for the player to place a piece...
-            Vector2Int chosenLocation = await _playerManager.currentPlayer.PlacePiece();
-
-            //Place the piece in the desired location, and if possible complete the animation
-            await _boardManager.PlacePiece(_playerManager.currentPlayer, chosenLocation.x, chosenLocation.y);
-
-            if (_boardManager.IsGameOver(ref winners)) break;
+            _playerManager = GetComponent<PlayerManager>();
+            _boardGenerator = GetComponent<BoardGenerator>();
             
-            //Get the next player... Do an animation if applicable...
-            await _playerManager.ChooseNextPlayer();
+            _gameConfig = Settings.gameConfiguration;
+            
+            _boardManager = new(_boardGenerator);
+            
+            ResetGameplayLoop();
         }
-        
-        //End the game... Who won?
-        if (winners != null && winners.Length != 0) await AwardWin(winners);
-        
-        else await HandleTie();
-    }
 
-    private async UniTask HandleTie()
-    {
-        Debug.Log("GAME ENDED WITH A TIE"); 
-    }
-
-    private async UniTask AwardWin(IPlayer[] winner)
-    {
-        Debug.Log("SOMEONE HAS WON");
-        foreach (var x in winner)
+        [ContextMenu("ResetGameplayLoop")]
+        public void ResetGameplayLoop()
         {
-            Debug.Log("SOMEONE HAS WON: " + x.GetPlayerInformation().TeamNumber + " --> " + (x as MonoBehaviour)?.name);
+            
+            
+            _ = HandleGameLoop();
         }
+
+        public async UniTask HandleGameLoop()
+        {
+            //Choose the player...
+            _playerManager.CreatePlayers();
+            await _playerManager.ChooseFirstPlayer(_numGamesPlayed);
+
+            IPlayer[] winners = null;
+
+            //Check is the board full? If it is exit the loop
+            while (!_boardManager.IsFull())
+            {
+                await DisplayCurrentPlayerTurn(_playerManager.currentPlayer);
+                
+                //Wait for the player to place a piece...
+                PieceData placementData;
+                do
+                {
+                    placementData = await _playerManager.currentPlayer.PlacePiece();
+                } while (WasCurrentMoveAccepted(placementData));
+
+                Debug.Log("Move was accepted, state: " + placementData.PlacementType);
+                
+                //Place the piece in the desired location, and if possible complete the animation
+               if(placementData.PlacementType == EPlacementType.Success) {
+                    await _boardManager.PlacePiece(placementData);
+                    PlacePieceEffect(placementData).Forget();
+                }
+                else
+                {
+                     MissedPieceEffect(placementData).Forget();
+                }
+
+               
+                //Check has the game ended? If it has exit the gameplay loop
+                if (_boardManager.IsGameOver(ref winners)) break;
+
+                //Get the next player... 
+                _playerManager.ChooseNextPlayer();
+            }
+
+            //End the game... Who won?
+            if (winners != null && winners.Length != 0) await AwardWin(winners);
+
+            else await HandleTie();
+        }
+
+        //Any (7, 111) & Success (4, 100) != 0 (100) was successfully placed = true, move to next turn.
+        private bool WasCurrentMoveAccepted(PieceData placementData) => (_gameConfig.moveToNextTurnWhen & placementData.PlacementType) != 0;
+
+        #region Animation Data FIX THIS
+        private async UniTask DisplayCurrentPlayerTurn(IPlayer playerManagerCurrentPlayer)
+        {
+            Debug.LogWarning("Implement DisplayCurrentPlayerTurn effect, playing an animation");
+
+        }
+        
+        private async UniTaskVoid PlacePieceEffect(PieceData placementData)
+        {
+            Debug.LogWarning("Implement PlacePieceEffect effect, playing an animation");
+        }
+
+        private async UniTaskVoid MissedPieceEffect(PieceData placementData)
+        {
+            Debug.LogWarning("Implement MissedPieceEffect effect, playing an animation");
+        }
+
+        private async UniTask HandleTie()
+        {
+            Debug.Log("GAME ENDED WITH A TIE");
+        }
+
+        private async UniTask AwardWin(IPlayer[] winner)
+        {
+            Debug.Log("SOMEONE HAS WON");
+            foreach (var x in winner)
+            {
+                Debug.Log("SOMEONE HAS WON: " + x.GetPlayerInformation().TeamNumber + " --> " +
+                          (x as MonoBehaviour)?.name);
+            }
+        }
+        #endregion
+
     }
 }

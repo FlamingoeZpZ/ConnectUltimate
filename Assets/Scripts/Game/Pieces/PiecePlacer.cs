@@ -1,7 +1,7 @@
-using Game.Pieces;
+using Game.Core;
 using UnityEngine;
 
-namespace Game.Players
+namespace Game.Pieces
 {
     public class PiecePlacer : MonoBehaviour
     {
@@ -15,10 +15,10 @@ namespace Game.Players
         [SerializeField] private float maxTorque = 10f;
 
         private Camera _mainCamera;
-        private Piece _currentPiece;
+        private PhysicalPiece _currentPiece;
         private IPlayer _currentOwner;
 
-        public Piece currentPiece => _currentPiece;
+        public PhysicalPiece currentPiece => _currentPiece;
 
         private class Sampler
         {
@@ -113,6 +113,8 @@ namespace Game.Players
 
         public void ReleasePiece()
         {
+            if (_currentPiece == null) return;
+
             if (useMomentum)
             {
                 Vector2 vel = _mouseSampler.GetVelocity() * momentumMultiplier;
@@ -149,9 +151,9 @@ namespace Game.Players
 
         public void PlacePiece(Vector2 screenPosition)
         {
-            Vector3 worldPosition =
-                _mainCamera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y,
-                    _mainCamera.nearClipPlane));
+            if (_currentPiece == null) return;
+            
+            Vector3 worldPosition = _mainCamera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, _mainCamera.nearClipPlane));
             worldPosition.z = 0; // Ensure it's on the 2D plane
             _currentPiece.transform.position = worldPosition;
         }

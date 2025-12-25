@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53cc34b07cd242e1b2eb1fdd34bb9256, type: 3}
-  m_Name: Default Player Config
+  m_Name: Player Config
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfiguration
   <numPlayers>k__BackingField: 2
   <numAI>k__BackingField: 1

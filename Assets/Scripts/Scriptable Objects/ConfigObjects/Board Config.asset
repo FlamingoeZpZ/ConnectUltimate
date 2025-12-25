@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f84a0d47856f9bc49bd1e75235a55c8f, type: 3}
-  m_Name: Default Board Config
+  m_Name: Board Config
   m_EditorClassIdentifier: Assembly-CSharp::BoardConfiguration
   <numCols>k__BackingField: 7
   <numRows>k__BackingField: 6

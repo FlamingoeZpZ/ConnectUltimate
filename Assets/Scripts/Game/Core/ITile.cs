@@ -5,7 +5,7 @@ namespace Game.Core
     public interface ITile
     {
         //Pending Implementation
-        public UniTaskVoid SetCurrentPiece(IPiece newPiece);
+        public UniTask SetCurrentPiece(IPiece newPiece);
         public IPiece GetCurrentPiece();
     }
 }

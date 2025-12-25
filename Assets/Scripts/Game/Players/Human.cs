@@ -1,5 +1,5 @@
-﻿
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using Game.Core;
 using Game.Pieces;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +11,6 @@ namespace Game.Players
         private PiecePlacer _piecePlacer;
         private PlayerInput _playerInput;
         
-        private Piece.EPlacementType  _currentPieceType;
         
         private void Awake()
         {
@@ -43,35 +42,21 @@ namespace Game.Players
         
         public async UniTask<PieceData> PlacePiece()
         {
-            _currentPieceType = Piece.EPlacementType.None;
-            
             _playerInput.actions.Enable();
             await UniTask.WaitUntil(_piecePlacer.HasActivePiece); //First wait until a piece actually spawns
             
-            Piece currentCachedPiece =  _piecePlacer.currentPiece;
-            currentCachedPiece.OnPieceSettled += OnMyPieceSettled;
-            
+            IPiece currentCachedPiece =  _piecePlacer.currentPiece;
             await UniTask.WaitWhile(_piecePlacer.HasActivePiece); //Then wait until the piece is dropped...
             
             _playerInput.actions.Disable(); 
             
-            await UniTask.WaitWhile(IsCurrentPieceActive); // Finally, wait until the piece has settled.
-            
-            currentCachedPiece.OnPieceSettled -= OnMyPieceSettled; // Unsub from this piece, we don't care anymore...
-
-            return new PieceData(_currentPieceType, currentCachedPiece);
-        }
-
-        private bool IsCurrentPieceActive() => _currentPieceType == Piece.EPlacementType.None;
-
-        private void OnMyPieceSettled(Piece.EPlacementType obj)
-        {
-            
+            return await currentCachedPiece.DropPieceLoop(); //
         }
 
         public void SetPlayerInformation(PlayerInformation info)
         {
-            throw new System.NotImplementedException();
+            Debug.LogWarning("SetPlayerInformation does nothing right now!", gameObject);
+            //throw new System.NotImplementedException();
         }
 
 

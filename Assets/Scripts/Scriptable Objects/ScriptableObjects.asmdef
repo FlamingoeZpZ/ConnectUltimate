@@ -1,7 +1,9 @@
 ﻿{
   "name": "ScriptableObjects",
   "rootNamespace": "ScriptableObjects",
-  "references": [],
+  "references": [
+    "Game.Core"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
