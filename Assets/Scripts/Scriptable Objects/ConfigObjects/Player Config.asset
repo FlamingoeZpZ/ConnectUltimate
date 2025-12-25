@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Player Config
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfiguration
   <numPlayers>k__BackingField: 2
-  <numAI>k__BackingField: 1
+  <numAI>k__BackingField: 0
   <startingPlayer>k__BackingField: 1
   <randomStartingPlayer>k__BackingField: 1

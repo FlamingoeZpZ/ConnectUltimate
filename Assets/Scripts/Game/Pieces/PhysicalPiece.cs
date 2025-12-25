@@ -18,15 +18,9 @@ namespace Game.Pieces
         public Vector3 GetCurrentPosition() => transform.position;
         public IPlayer GetCurrentPlayer() => _owner;
 
-        private void OnEnable()
-        {
-            DisablePhysics();
-            _cts = new CancellationTokenSource();
-        }
 
         private void OnDisable()
         {
-            DisablePhysics();
             // Cancel any running tasks when disabled/returned to pool
             _cts?.Cancel();
             _cts?.Dispose();
@@ -72,12 +66,11 @@ namespace Game.Pieces
                                 // Wait for tile to handle the piece placement
                                 DisablePhysics();
                                 
-                                return new (EPlacementType.Success, this); // Exit successfully
+                                return new (EPlacementType.Success, this, tile); // Exit successfully
                             }
-
                             Debug.Log($"No tile found at position {transform.position} for piece {gameObject.name}", gameObject);
-                            PiecePool.instance.ReturnActivePiece(this);
-                            return new (EPlacementType.GotStuck, this);
+                            Remove();
+                            return new (EPlacementType.GotStuck, this, null);
                         }
                     }
                     else
@@ -90,19 +83,31 @@ namespace Game.Pieces
                 }
 
                 // Despawn after 20 seconds if nothing happened
-                Debug.Log($"Piece {gameObject.name} despawned after 20 seconds", gameObject);
-                PiecePool.instance.ReturnActivePiece(this);
-                return new (EPlacementType.TimerDespawned, this);
+                Debug.Log($"Piece {gameObject.name} despawned after {Settings.gameConfiguration.coinSettleTime} seconds", gameObject);
+                Remove();
+                return new (EPlacementType.TimerDespawned, this, null);
             }
             catch (OperationCanceledException)
             {
                 // Task was cancelled (object disabled/destroyed), this is expected
                 Debug.Log($"Piece {gameObject.name} task cancelled", gameObject);
-                return new (EPlacementType.None, this);
+                return new (EPlacementType.None, this, null);
             }
         }
 
-        public void AssignPiece(IPlayer newOwner)
+        public void Remove()
+        {
+            PiecePool.instance.ReturnActivePiece(this);
+        }
+
+        public void Respawn()
+        {
+            DisablePhysics();
+            _cts = new CancellationTokenSource();
+            gameObject.SetActive(true);
+        }
+
+        public void AssignPlayer(IPlayer newOwner)
         {
             _owner = newOwner;
         }

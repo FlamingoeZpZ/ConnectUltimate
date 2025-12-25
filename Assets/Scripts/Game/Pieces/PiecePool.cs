@@ -46,7 +46,7 @@ namespace Game.Pieces
         {
             PhysicalPiece physicalPiece = GetOrCreatePiece();
             physicalPiece.transform.localScale = Vector3.one * (_boardConfiguration.RunTimeTileSize - 0.02f);
-            physicalPiece.AssignPiece(owner);
+            physicalPiece.AssignPlayer(owner);
             ActivatePiece(physicalPiece);
             return physicalPiece;
         }
@@ -90,7 +90,7 @@ namespace Game.Pieces
         private void ActivatePiece(PhysicalPiece physicalPiece)
         {
             _activePieces.Add(physicalPiece);
-            physicalPiece.gameObject.SetActive(true);
+            physicalPiece.Respawn();
         }
     }
 }

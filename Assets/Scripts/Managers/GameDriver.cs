@@ -57,20 +57,28 @@ namespace Managers{
                 do
                 {
                     placementData = await _playerManager.currentPlayer.PlacePiece();
-                } while (WasCurrentMoveAccepted(placementData));
 
-                Debug.Log("Move was accepted, state: " + placementData.PlacementType);
-                
-                //Place the piece in the desired location, and if possible complete the animation
-               if(placementData.PlacementType == EPlacementType.Success) {
-                    await _boardManager.PlacePiece(placementData);
+                    if (!WasCurrentMoveAccepted(placementData))
+                    {
+                        placementData.Piece.Remove();
+                        InvalidPieceEffect(placementData).Forget();
+                    }
+
+                    Debug.Log($"Piece Placement Type: {placementData.PlacementType}, was the move accepted? {WasCurrentMoveAccepted(placementData)}");
+                    
+                } while (!WasCurrentMoveAccepted(placementData));
+
+                if (placementData.PlacementType == EPlacementType.Success)
+                {
+                    _boardManager.PlacePiece(placementData);
+                    await placementData.Tile.SetCurrentPiece(placementData.Piece);
                     PlacePieceEffect(placementData).Forget();
                 }
                 else
                 {
-                     MissedPieceEffect(placementData).Forget();
+                    MissedPieceEffect(placementData).Forget();
                 }
-
+                
                
                 //Check has the game ended? If it has exit the gameplay loop
                 if (_boardManager.IsGameOver(ref winners)) break;
@@ -99,7 +107,10 @@ namespace Managers{
         {
             Debug.LogWarning("Implement PlacePieceEffect effect, playing an animation");
         }
-
+        private async UniTaskVoid InvalidPieceEffect(PieceData placementData)
+        {
+            Debug.LogWarning("Implement InvalidPieceEffect effect, playing an animation");
+        }
         private async UniTaskVoid MissedPieceEffect(PieceData placementData)
         {
             Debug.LogWarning("Implement MissedPieceEffect effect, playing an animation");

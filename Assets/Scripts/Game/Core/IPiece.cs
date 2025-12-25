@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Game.Core
@@ -8,18 +9,23 @@ namespace Game.Core
     {
         public Vector3 GetCurrentPosition();
         public IPlayer GetCurrentPlayer();
+        public void AssignPlayer(IPlayer newPlayer);
         public UniTask<PieceData> DropPieceLoop();
+        public void Remove();
+        public void Respawn();
     }
     
     public struct PieceData
     {
         public readonly EPlacementType PlacementType;
-        public readonly IPiece Piece;
+        [NotNull] public readonly IPiece Piece;
+        [CanBeNull] public readonly ITile Tile;
 
-        public PieceData(EPlacementType placementType, IPiece piece)
+        public PieceData(EPlacementType placementType, IPiece piece, ITile tile)
         {
             PlacementType = placementType;
             Piece = piece;
+            Tile = tile;
         }
     }
     

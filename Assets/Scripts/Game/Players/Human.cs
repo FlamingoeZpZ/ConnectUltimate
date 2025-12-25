@@ -26,6 +26,8 @@ namespace Game.Players
             _playerInput.actions["TapRelease"].started  += PlacePiecePlayer;
             _playerInput.actions["TapRelease"].canceled += TryDropPiecePlayer;
             _playerInput.actions["MousePos"].performed  += HandlePiecePlayer;
+            
+            _playerInput.actions.Disable();
         }
 
         private void OnDestroy()
@@ -43,13 +45,20 @@ namespace Game.Players
         public async UniTask<PieceData> PlacePiece()
         {
             _playerInput.actions.Enable();
+            
+            Debug.Log("Waiting for player to start placing");
+            
             await UniTask.WaitUntil(_piecePlacer.HasActivePiece); //First wait until a piece actually spawns
+            
+            Debug.Log("Waiting for player to drop the piece");
+
             
             IPiece currentCachedPiece =  _piecePlacer.currentPiece;
             await UniTask.WaitWhile(_piecePlacer.HasActivePiece); //Then wait until the piece is dropped...
             
             _playerInput.actions.Disable(); 
             
+            Debug.Log("Waiting for piece to fall asleep");
             return await currentCachedPiece.DropPieceLoop(); //
         }
 

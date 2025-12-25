@@ -144,6 +144,9 @@ namespace Game.Pieces
 
         public void CreateChip(Vector2 startingLocation)
         {
+            
+            Debug.Log("Creating a new piece.");
+            
             _currentPiece = PiecePool.instance.SpawnPiece(_currentOwner);
             _mouseSampler.Reset();
             PlacePiece(startingLocation);

@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using Game.Core;
+﻿using Game.Core;
 using UnityEngine;
 
 namespace Managers
@@ -21,11 +20,9 @@ namespace Managers
             return true;
         }
 
-        public async UniTask PlacePiece(PieceData data)
+        public void PlacePiece(PieceData data)
         {
-            Vector3 loc = data.Piece.GetCurrentPosition();
-            var tile = _boardGenerator.GetTile((int)loc.x, (int)loc.y);
-            await tile.SetCurrentPiece(data.Piece);
+            Debug.LogError("I don't think we're tracking this nicely... :(");   
         }
 
 

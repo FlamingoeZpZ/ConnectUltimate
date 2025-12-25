@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7bbf979aabb48e7bcdae321d671b76e, type: 3}
   m_Name: Game Configuration
   m_EditorClassIdentifier: ScriptableObjects::ScriptableObjects.GameConfiguration
-  <useGravity>k__BackingField: 0
+  <useGravity>k__BackingField: 1
   <useSpinning>k__BackingField: 0
-  <usePlinko>k__BackingField: 0
-  <moveToNextTurnWhen>k__BackingField: 4
-  <coinSettleTime>k__BackingField: 30
+  <usePlinko>k__BackingField: 1
+  <moveToNextTurnWhen>k__BackingField: -1
+  <coinSettleTime>k__BackingField: 10

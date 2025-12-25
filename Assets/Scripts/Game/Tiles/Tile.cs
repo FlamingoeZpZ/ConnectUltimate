@@ -25,10 +25,14 @@ namespace Game.Tiles
 
         public async UniTask SetCurrentPiece(IPiece newPiece)
         {
+            Debug.Log("I have a new piece!", gameObject);
+            
             _currentPiece = newPiece;
 
             if (_currentPiece is not MonoBehaviour) return; // Nothing else we do matters as the piece must also be physical.
 
+            Debug.Log("I have a new piece and it's real");
+            
             // Animate the snap with visual feedback
             float animationTime = Settings.effectsConfiguration.tileAnimationTime;
             
