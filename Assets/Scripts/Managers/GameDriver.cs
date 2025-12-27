@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Managers{
     
-    [RequireComponent(typeof(BoardGenerator), typeof(PlayerManager)), DefaultExecutionOrder(1000)]
+    [RequireComponent(typeof(BoardGenerator), typeof(PlayerManager), typeof(DisplayManager)), DefaultExecutionOrder(1000)]
     public class GameDriver : MonoBehaviour
     {
         private GameConfiguration _gameConfig;
@@ -13,6 +13,7 @@ namespace Managers{
         private PlayerManager _playerManager;
         private BoardManager _boardManager;
         private BoardGenerator _boardGenerator;
+        private DisplayManager _displayManager;
 
         private int _numGamesPlayed;
 
@@ -22,6 +23,7 @@ namespace Managers{
         {
             _playerManager = GetComponent<PlayerManager>();
             _boardGenerator = GetComponent<BoardGenerator>();
+            _displayManager = GetComponent<DisplayManager>();
             
             _gameConfig = Settings.gameConfiguration;
             
@@ -48,7 +50,7 @@ namespace Managers{
             //Check is the board full? If it is exit the loop
             while (!_boardManager.IsFull())
             {
-                await DisplayCurrentPlayerTurn(_playerManager.currentPlayer);
+                await _displayManager.DisplayCurrentPlayerTurn(_playerManager.currentPlayer);
                 
                 
                 //Wait for the player to place a piece...
@@ -66,7 +68,7 @@ namespace Managers{
                     if (!WasCurrentMoveAccepted(placementData))
                     {
                         placementData.Piece.Remove();
-                        InvalidPieceEffect(placementData).Forget();
+                        _displayManager.InvalidPieceEffect(placementData).Forget();
                     }
 
                     Debug.Log($"Piece Placement Type: {placementData.PlacementType}, was the move accepted? {WasCurrentMoveAccepted(placementData)}");
@@ -77,11 +79,11 @@ namespace Managers{
                 {
                     _boardManager.PlacePiece(placementData);
                     await placementData.Tile.SetCurrentPiece(placementData.Piece);
-                    PlacePieceEffect(placementData).Forget();
+                    _displayManager.PlacePieceEffect(placementData).Forget();
                 }
                 else
                 {
-                    MissedPieceEffect(placementData).Forget();
+                    _displayManager.MissedPieceEffect(placementData).Forget();
                 }
                 
                
@@ -93,48 +95,13 @@ namespace Managers{
             }
 
             //End the game... Who won?
-            if (winners != null && winners.Length != 0) await AwardWin(winners);
-
-            else await HandleTie();
+            if (winners != null && winners.Length != 0) await _displayManager.AwardWin(winners);
+            else await _displayManager.HandleTie();
+            
+            ResetGameplayLoop();
         }
 
         //Any (7, 111) & Success (4, 100) != 0 (100) was successfully placed = true, move to next turn.
         private bool WasCurrentMoveAccepted(PieceData placementData) => (_gameConfig.moveToNextTurnWhen & placementData.PlacementType) != 0;
-
-        #region Animation Data FIX THIS
-        private async UniTask DisplayCurrentPlayerTurn(IPlayer playerManagerCurrentPlayer)
-        {
-            Debug.LogWarning("Implement DisplayCurrentPlayerTurn effect, playing an animation");
-
-        }
-        
-        private async UniTaskVoid PlacePieceEffect(PieceData placementData)
-        {
-            Debug.LogWarning("Implement PlacePieceEffect effect, playing an animation");
-        }
-        private async UniTaskVoid InvalidPieceEffect(PieceData placementData)
-        {
-            Debug.LogWarning("Implement InvalidPieceEffect effect, playing an animation");
-        }
-        private async UniTaskVoid MissedPieceEffect(PieceData placementData)
-        {
-            Debug.LogWarning("Implement MissedPieceEffect effect, playing an animation");
-        }
-
-        private async UniTask HandleTie()
-        {
-            Debug.Log("GAME ENDED WITH A TIE");
-        }
-
-        private async UniTask AwardWin(IPlayer[] winner)
-        {
-            Debug.Log("SOMEONE HAS WON");
-            foreach (var x in winner)
-            {
-                Debug.Log("SOMEONE HAS WON: " + x.GetPlayerInformation().TeamNumber + " --> " +
-                          (x as MonoBehaviour)?.name);
-            }
-        }
-        #endregion
     }
 }
