@@ -5,7 +5,7 @@ namespace Game.Core
 {
     public interface IPlayer
     {
-        public UniTask<PieceData> PlacePiece();
+        public UniTask<IPiece> PlacePiece();
         public void SetPlayerInformation(PlayerInformation info);
         public PlayerInformation GetPlayerInformation();
     }

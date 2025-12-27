@@ -5,7 +5,8 @@
     "UniTask",
     "ScriptableObjects",
     "Game.Core",
-    "Game.Players"
+    "Game.Players",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

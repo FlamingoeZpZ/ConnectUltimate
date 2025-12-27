@@ -14,6 +14,7 @@ namespace Game.Pieces
         private Rigidbody2D _rb;
         private readonly Collider2D[] _results = new Collider2D[1];
         private CancellationTokenSource _cts;
+        private SpriteRenderer _spriteRenderer;
 
         public Vector3 GetCurrentPosition() => transform.position;
         public IPlayer GetCurrentPlayer() => _owner;
@@ -27,10 +28,14 @@ namespace Game.Pieces
             _cts = null;
         }
 
+        private void Awake()
+        {
+            _spriteRenderer =  GetComponent<SpriteRenderer>();
+            _rb =  GetComponent<Rigidbody2D>();
+        }
+
         private void DisablePhysics()
         {
-            _rb ??= GetComponent<Rigidbody2D>();
-
             _rb.bodyType = RigidbodyType2D.Static;
             _rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
@@ -110,6 +115,7 @@ namespace Game.Pieces
         public void AssignPlayer(IPlayer newOwner)
         {
             _owner = newOwner;
+            _spriteRenderer.sharedMaterial = newOwner.GetPlayerInformation().SharedPlayerMaterial;
         }
 
         public void DropAt(Vector2 velocity, float torque) => DropAt(velocity, torque, transform.position, transform.rotation);

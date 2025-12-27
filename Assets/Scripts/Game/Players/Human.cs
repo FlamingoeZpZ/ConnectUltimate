@@ -2,49 +2,28 @@
 using Game.Core;
 using Game.Pieces;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Game.Players
 {
     public class Human : MonoBehaviour, IPlayer
     {
         private PiecePlacer _piecePlacer;
-        private PlayerInput _playerInput;
-        
+        private PlayerInformation _playerInformation;
         
         private void Awake()
         {
             _piecePlacer = GetComponent<PiecePlacer>();
             _piecePlacer.SetOwner(this);
-
-            BindControls();
         }
         #region Controls
-        private void BindControls()
-        {
-            _playerInput = GetComponent<PlayerInput>();
-            _playerInput.actions["TapRelease"].started  += PlacePiecePlayer;
-            _playerInput.actions["TapRelease"].canceled += TryDropPiecePlayer;
-            _playerInput.actions["MousePos"].performed  += HandlePiecePlayer;
-            
-            _playerInput.actions.Disable();
-        }
-
-        private void OnDestroy()
-        {
-            _playerInput.actions["TapRelease"].started  -= PlacePiecePlayer;
-            _playerInput.actions["TapRelease"].canceled -= TryDropPiecePlayer;
-            _playerInput.actions["MousePos"].performed  -= HandlePiecePlayer;
-        }
-        private void TryDropPiecePlayer(InputAction.CallbackContext _) => _piecePlacer.ReleasePiece();
-        private void HandlePiecePlayer(InputAction.CallbackContext obj) => _piecePlacer.HandlePiece(obj.ReadValue<Vector2>());
-        private void PlacePiecePlayer(InputAction.CallbackContext obj) => _piecePlacer.CreateChip(obj.ReadValue<Vector2>());
+        public void TryDropPiecePlayer() => _piecePlacer.ReleasePiece();
+        public void HandlePiecePlayer(Vector2 loc) => _piecePlacer.HandlePiece(loc);
+        public void PlacePiecePlayer(Vector2 loc) => _piecePlacer.CreateChip(loc);
 
         #endregion
         
-        public async UniTask<PieceData> PlacePiece()
+        public async UniTask<IPiece> PlacePiece()
         {
-            _playerInput.actions.Enable();
             
             Debug.Log("Waiting for player to start placing");
             
@@ -56,22 +35,16 @@ namespace Game.Players
             IPiece currentCachedPiece =  _piecePlacer.currentPiece;
             await UniTask.WaitWhile(_piecePlacer.HasActivePiece); //Then wait until the piece is dropped...
             
-            _playerInput.actions.Disable(); 
-            
             Debug.Log("Waiting for piece to fall asleep");
-            return await currentCachedPiece.DropPieceLoop(); //
+            return currentCachedPiece;
         }
 
         public void SetPlayerInformation(PlayerInformation info)
         {
-            Debug.LogWarning("SetPlayerInformation does nothing right now!", gameObject);
-            //throw new System.NotImplementedException();
+            _playerInformation = info;
         }
 
 
-        public PlayerInformation GetPlayerInformation()
-        {
-            throw new System.NotImplementedException();
-        }
+        public PlayerInformation GetPlayerInformation() => _playerInformation;
     }
 }

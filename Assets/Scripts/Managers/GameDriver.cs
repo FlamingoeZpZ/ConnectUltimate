@@ -18,7 +18,6 @@ namespace Managers{
 
         public int numGamesPlayed => _numGamesPlayed;
 
-
         private void Start()
         {
             _playerManager = GetComponent<PlayerManager>();
@@ -26,7 +25,6 @@ namespace Managers{
             
             _gameConfig = Settings.gameConfiguration;
             
-            _boardManager = new(_boardGenerator);
             
             ResetGameplayLoop();
         }
@@ -34,8 +32,8 @@ namespace Managers{
         [ContextMenu("ResetGameplayLoop")]
         public void ResetGameplayLoop()
         {
-            
-            
+            _boardManager = new(_boardGenerator);
+            ControlManager.SetCurrentTurn(null);
             _ = HandleGameLoop();
         }
 
@@ -52,12 +50,19 @@ namespace Managers{
             {
                 await DisplayCurrentPlayerTurn(_playerManager.currentPlayer);
                 
+                
                 //Wait for the player to place a piece...
                 PieceData placementData;
                 do
                 {
-                    placementData = await _playerManager.currentPlayer.PlacePiece();
-
+                    ControlManager.SetCurrentTurn(_playerManager.currentPlayer);
+                    
+                    var currentCachedPiece = await _playerManager.currentPlayer.PlacePiece();
+                    
+                    ControlManager.DisableGameControls();
+                    
+                    placementData = await currentCachedPiece.DropPieceLoop();
+                    
                     if (!WasCurrentMoveAccepted(placementData))
                     {
                         placementData.Piece.Remove();
@@ -131,6 +136,5 @@ namespace Managers{
             }
         }
         #endregion
-
     }
 }

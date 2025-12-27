@@ -46,7 +46,7 @@ namespace Game.Tiles
                 newPiece is Component pieceComponent && 
                 pieceComponent.TryGetComponent<SpriteRenderer>(out var pieceRenderer))
             {
-                tileRenderer.sharedMaterial = pieceRenderer.sharedMaterial;
+                //tileRenderer.sharedMaterial = pieceRenderer.sharedMaterial;
             }
         }
 

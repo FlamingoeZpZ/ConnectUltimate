@@ -5,9 +5,9 @@ namespace Game.Players
 {
     public class RandomAI : IPlayer
     {
-        public async UniTask<PieceData> PlacePiece()
+        public async UniTask<IPiece> PlacePiece()
         {
-            return new PieceData();
+            return null;
         }
         public void SetPlayerInformation(PlayerInformation info)
         {
