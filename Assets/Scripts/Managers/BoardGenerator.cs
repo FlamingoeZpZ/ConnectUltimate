@@ -133,7 +133,7 @@ namespace Managers
                 edgeCollider.points = points;
 
                 float xPos = startX + col * (cellSize + cellSpacing);
-                columnObject.transform.position = new Vector3(xPos, 0, 0);
+                columnObject.transform.localPosition = new Vector3(xPos, 0, 0);
 
                 CreateCellsInColumn(columnObject.transform, rows, col, startY);
             }

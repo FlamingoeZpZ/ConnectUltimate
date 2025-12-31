@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-8906620792135372981
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing3_{-8906620792135372981}
+  m_AudioClip: {fileID: 8300000, guid: d0490b6d73073ed4eb2f9c29be52d8c7, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-8049151783614273827
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing2_{-8049151783614273827}
+  m_AudioClip: {fileID: 8300000, guid: 48418ee21333f884aa8bcc0462b59f28, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-3077236322696658919
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing4_{-3077236322696658919}
+  m_AudioClip: {fileID: 8300000, guid: 5aaae8c24b3b3b947b613f1a7d7f14d6, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &403015502178886217
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing5_{403015502178886217}
+  m_AudioClip: {fileID: 8300000, guid: d116f9c7868bfce4ca54d13de26bbb93, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3289879873998647656
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing0_{3289879873998647656}
+  m_AudioClip: {fileID: 8300000, guid: e56ea72e5d26b1746b52318e6232b70d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3792611670339596824
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing1_{3792611670339596824}
+  m_AudioClip: {fileID: 8300000, guid: 18f915b18da432e45a35d953e0001c1e, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &5258898193337859785
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: boing6_{5258898193337859785}
+  m_AudioClip: {fileID: 8300000, guid: deb1dcb05ca853c48a694aee42186656, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BoingSounds
+  m_Volume: -20
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: -27.826092, y: 0}
+  m_PitchRandomizationRange: {x: -369.23074, y: 401.3377}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 3289879873998647656}
+  - {fileID: 3792611670339596824}
+  - {fileID: -8049151783614273827}
+  - {fileID: -8906620792135372981}
+  - {fileID: -3077236322696658919}
+  - {fileID: 403015502178886217}
+  - {fileID: 5258898193337859785}
+  m_AvoidRepeatingLast: 3
+  m_PlaybackMode: 2
+  m_TriggerMode: 1
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 1
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0

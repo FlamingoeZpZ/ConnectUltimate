@@ -5,7 +5,8 @@
     "Game.Core",
     "UniTask",
     "Utility",
-    "ScriptableObjects"
+    "ScriptableObjects",
+    "Managers"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

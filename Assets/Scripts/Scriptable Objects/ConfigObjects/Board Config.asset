@@ -15,8 +15,3 @@ MonoBehaviour:
   <numCols>k__BackingField: 7
   <numRows>k__BackingField: 6
   <numConnect>k__BackingField: 4
-  <useGravity>k__BackingField: 0
-  <useSpinning>k__BackingField: 0
-  <usePlinko>k__BackingField: 0
-  <skipTurnIfFailedToSettle>k__BackingField: 1
-  <coinSettleTime>k__BackingField: 30

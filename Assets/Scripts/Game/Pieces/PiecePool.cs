@@ -45,7 +45,7 @@ namespace Game.Pieces
         public PhysicalPiece SpawnPiece(IPlayer owner)
         {
             PhysicalPiece physicalPiece = GetOrCreatePiece();
-            physicalPiece.transform.localScale = Vector3.one * (_boardConfiguration.RunTimeTileSize - 0.02f);
+            physicalPiece.transform.localScale = Vector3.one * (_boardConfiguration.RunTimeTileSize - 0.04f);
             physicalPiece.AssignPlayer(owner);
             ActivatePiece(physicalPiece);
             return physicalPiece;

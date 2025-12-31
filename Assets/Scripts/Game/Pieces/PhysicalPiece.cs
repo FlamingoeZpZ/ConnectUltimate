@@ -44,7 +44,7 @@ namespace Game.Pieces
         {
             float despawnTimer = Settings.gameConfiguration.coinSettleTime;
             float lowVelocityTimer = 0f;
-            const float lowVelocityThreshold = 0.1f;
+            float lowVelocityThreshold = 0.2f * Settings.gameConfiguration.gravityScale;
             const float lowVelocityDuration = 0.2f;
 
             try
@@ -102,6 +102,9 @@ namespace Game.Pieces
 
         public void Remove()
         {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = null;
             PiecePool.instance.ReturnActivePiece(this);
         }
 
@@ -110,6 +113,7 @@ namespace Game.Pieces
             DisablePhysics();
             _cts = new CancellationTokenSource();
             gameObject.SetActive(true);
+            _rb.gravityScale = Settings.gameConfiguration.gravityScale;
         }
 
         public void AssignPlayer(IPlayer newOwner)

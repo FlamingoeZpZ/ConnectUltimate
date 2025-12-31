@@ -24,7 +24,7 @@ namespace Game.Pieces
         {
             private int _current;
             private uint _total;
-            private const int NumSamples = 50;
+            private const int NumSamples = 200;
             private readonly Vector2[] _samples = new Vector2[NumSamples];
             private readonly float[] _times = new float[NumSamples];
 

@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: -7483855084630652204}
   - component: {fileID: -4905069799747602461}
   - component: {fileID: 3484614194891850088}
+  - component: {fileID: 4504270789039156057}
   m_Layer: 6
   m_Name: PlayerChip
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +117,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -168,3 +169,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b5265f1f6c9c645888c51eee511021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Piece
+--- !u!114 &4504270789039156057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285881653865763087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 532d2db3a91b22345a7b1962294164be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EffectsSystems::EffectsSystems.CollisionSounds

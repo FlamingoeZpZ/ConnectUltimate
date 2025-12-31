@@ -23,6 +23,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Release",
+                    "type": "PassThrough",
+                    "id": "0dd1acdf-5057-410f-8242-f0992b769668",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.1,behavior=1)",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -89,6 +98,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MousePos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a09e298-20e3-4cc6-91cd-df134ef34ad3",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Release",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -36,8 +36,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _ColorBoost: 5
+    - _Speed: 0.5
+    - _Transition: 0.6224439
+    - _TransitionBonus: 20
     m_Colors:
-    - _PlayerColor: {r: 0.5518868, g: 0.55627996, b: 1, a: 1}
+    - _OldColor: {r: 1, g: 0, b: 0, a: 1}
+    - _PlayerColor: {r: 1, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

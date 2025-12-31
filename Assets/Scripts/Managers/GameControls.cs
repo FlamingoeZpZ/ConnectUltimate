@@ -111,6 +111,15 @@ namespace Managers
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Release"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0dd1acdf-5057-410f-8242-f0992b769668"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(pressPoint=0.1,behavior=1)"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -177,6 +186,17 @@ namespace Managers
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MousePos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a09e298-20e3-4cc6-91cd-df134ef34ad3"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Release"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -766,6 +786,7 @@ namespace Managers
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_TapRelease = m_Player.FindAction("TapRelease", throwIfNotFound: true);
             m_Player_MousePos = m_Player.FindAction("MousePos", throwIfNotFound: true);
+            m_Player_Release = m_Player.FindAction("Release", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -861,6 +882,7 @@ namespace Managers
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
         private readonly InputAction m_Player_TapRelease;
         private readonly InputAction m_Player_MousePos;
+        private readonly InputAction m_Player_Release;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -880,6 +902,10 @@ namespace Managers
             /// Provides access to the underlying input action "Player/MousePos".
             /// </summary>
             public InputAction @MousePos => m_Wrapper.m_Player_MousePos;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Release".
+            /// </summary>
+            public InputAction @Release => m_Wrapper.m_Player_Release;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -912,6 +938,9 @@ namespace Managers
                 @MousePos.started += instance.OnMousePos;
                 @MousePos.performed += instance.OnMousePos;
                 @MousePos.canceled += instance.OnMousePos;
+                @Release.started += instance.OnRelease;
+                @Release.performed += instance.OnRelease;
+                @Release.canceled += instance.OnRelease;
             }
 
             /// <summary>
@@ -929,6 +958,9 @@ namespace Managers
                 @MousePos.started -= instance.OnMousePos;
                 @MousePos.performed -= instance.OnMousePos;
                 @MousePos.canceled -= instance.OnMousePos;
+                @Release.started -= instance.OnRelease;
+                @Release.performed -= instance.OnRelease;
+                @Release.canceled -= instance.OnRelease;
             }
 
             /// <summary>
@@ -1243,6 +1275,13 @@ namespace Managers
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnMousePos(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Release" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnRelease(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

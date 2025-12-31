@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PiecePlacer
   <useMomentum>k__BackingField: 1
-  momentumMultiplier: 0.001
-  maxMomentum: 4
-  torqueMultiplier: 0.001
-  maxTorque: 5
+  momentumMultiplier: 0.5
+  maxMomentum: 20
+  torqueMultiplier: 0.5
+  maxTorque: 10

@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Game.Core;
 using ScriptableObjects;
@@ -19,6 +20,8 @@ namespace Managers{
 
         public int numGamesPlayed => _numGamesPlayed;
 
+        public static event Action onGameRestarted;
+
         private void Start()
         {
             _playerManager = GetComponent<PlayerManager>();
@@ -34,9 +37,14 @@ namespace Managers{
         [ContextMenu("ResetGameplayLoop")]
         public void ResetGameplayLoop()
         {
+            onGameRestarted?.Invoke();
+
             _boardManager = new(_boardGenerator);
+            _boardGenerator.InitializeConfig();
             ControlManager.SetCurrentTurn(null);
             _ = HandleGameLoop();
+            Debug.Log("Game has been reset!");
+
         }
 
         public async UniTask HandleGameLoop()

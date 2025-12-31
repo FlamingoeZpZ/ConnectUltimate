@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Core;
+using Managers;
 using UnityEngine;
 using ScriptableObjects;
 
@@ -14,6 +15,12 @@ namespace Game.Tiles
         private void OnEnable()
         {
             _cts = new CancellationTokenSource();
+            GameDriver.onGameRestarted += ResetTile;
+        }
+
+        private void ResetTile()
+        {
+            if (_currentPiece is not null) _currentPiece.Remove();
         }
 
         private void OnDisable()
@@ -21,11 +28,13 @@ namespace Game.Tiles
             _cts?.Cancel();
             _cts?.Dispose();
             _cts = null;
+            
+            GameDriver.onGameRestarted -= ResetTile;
+
         }
 
         public async UniTask SetCurrentPiece(IPiece newPiece)
         {
-            Debug.Log("I have a new piece!", gameObject);
             
             _currentPiece = newPiece;
 
@@ -39,14 +48,6 @@ namespace Game.Tiles
             if (animationTime > 0)
             {
                 await AnimateSnapAsync(newPiece, animationTime);
-            }
-
-            // Match materials for visual consistency
-            if (TryGetComponent<SpriteRenderer>(out var tileRenderer) && 
-                newPiece is Component pieceComponent && 
-                pieceComponent.TryGetComponent<SpriteRenderer>(out var pieceRenderer))
-            {
-                //tileRenderer.sharedMaterial = pieceRenderer.sharedMaterial;
             }
         }
 
